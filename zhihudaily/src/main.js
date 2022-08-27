@@ -7,6 +7,9 @@ import Vant from "vant";
 import "./assets/reset.min.css";
 import "amfe-flexible";
 import "vant/lib/index.css";
+import { handleMaxWidth } from "./assets/utils";
+handleMaxWidth();
+window.addEventListener("resize", handleMaxWidth());
 
 const app = createApp(App);
 app.use(Vant);
