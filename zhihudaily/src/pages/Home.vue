@@ -104,11 +104,13 @@ export default {
       display: block;
       height: 100%;
       color: #fff;
+      margin: 0;
 
       img {
         display: block;
         widows: 100%;
         height: 100%;
+        margin: 0;
       }
 
       .mark {

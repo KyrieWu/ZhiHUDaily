@@ -5,6 +5,7 @@ export const isPlainObject = function isPlainObject(obj) {
     return false;
   proto = Object.getPrototypeOf(obj);
   if (!proto) return true;
+  // eslint-disable-next-line
   Ctor = proto.hasOwnProperty("constructor") && proto.constructor;
   return typeof Ctor === "function" && Ctor === Object;
 };

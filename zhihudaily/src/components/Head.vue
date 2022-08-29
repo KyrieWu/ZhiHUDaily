@@ -17,7 +17,7 @@
 import { computed, reactive, toRefs } from "vue";
 import { formatTime } from "@/assets/utils";
 export default {
-  name: "Head",
+  name: "HeadItem",
   props: {
     time: {
       type: String,
