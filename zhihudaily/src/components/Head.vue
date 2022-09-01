@@ -14,8 +14,11 @@
 </template>
 
 <script>
-import { computed, reactive, toRefs } from "vue";
+import { computed, reactive, toRefs, onBeforeMount } from "vue";
 import { formatTime } from "@/assets/utils";
+import timg from "@/assets/imgs/timg.jpg";
+import { useStore } from "vuex";
+import { is, removeTypeDuplicates } from "@babel/types";
 export default {
   name: "HeadItem",
   props: {
@@ -25,8 +28,14 @@ export default {
     },
   },
   setup(props) {
-    let state = reactive({
-      pic: require("../assets/imgs/timg.jpg"),
+    const store = useStore();
+
+    let pic = computed(() => {
+      let { isLogin, info } = store.state;
+      if (isLogin && info) {
+        return info.pic || timg;
+      }
+      return timg;
     });
 
     let timeNow = computed(() => {
@@ -52,8 +61,14 @@ export default {
       };
     });
 
+    onBeforeMount(() => {
+      let { isLogin, info } = store.state;
+      if (isLogin === null) store.dispatch("changeIsLoginAsync");
+      if (info === null) store.dispatch("changeInfoAsync");
+    });
+
     return {
-      ...toRefs(state),
+      pic,
       timeNow,
     };
   },
