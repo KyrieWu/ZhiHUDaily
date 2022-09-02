@@ -80,7 +80,7 @@ export default {
       localStorage.setItem("token", token);
       store.commit("changeIsLogin", true);
       store.dispatch("changeInfoAsync");
-      // store.commit("changeStoreList", null);
+      store.commit("changeStoreList", null);
       Toast("小主真棒，当前登录成功喽~");
 
       // 跳转到指定地址

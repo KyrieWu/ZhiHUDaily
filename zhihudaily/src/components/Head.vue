@@ -18,7 +18,6 @@ import { computed, reactive, toRefs, onBeforeMount } from "vue";
 import { formatTime } from "@/assets/utils";
 import timg from "@/assets/imgs/timg.jpg";
 import { useStore } from "vuex";
-import { is, removeTypeDuplicates } from "@babel/types";
 export default {
   name: "HeadItem",
   props: {

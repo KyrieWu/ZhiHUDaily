@@ -33,6 +33,7 @@ router.beforeEach(async (to, from, next) => {
           next("/login");
           return;
         }
+        store.commit("changeIsLogin", true);
         store.commit("changeInfo", data);
         next();
       } catch (err) {}

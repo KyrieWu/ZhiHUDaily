@@ -42,7 +42,7 @@ export default {
       localStorage.removeItem("token");
       store.commit("changeIsLogin", null);
       store.commit("changeInfo", null);
-      //store.commit("changeStoreList", null);
+      store.commit("changeStoreList", null);
       router.replace("/login");
     };
     return {

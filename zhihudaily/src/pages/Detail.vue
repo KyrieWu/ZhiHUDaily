@@ -5,7 +5,11 @@
     <van-icon name="arrow-left" @click="handle" />
     <van-icon name="comment-o" :badge="comments" />
     <van-icon name="good-job-o" :badge="popularity" />
-    <van-icon name="star-o" color="#1989fa" />
+    <van-icon
+      name="star-o"
+      :color="isStore ? '#1989fa' : '#000'"
+      @click="storeHandle"
+    />
     <van-icon name="share-o" color="#ccc" />
   </div>
 </template>
@@ -18,8 +22,12 @@ import {
   onBeforeMount,
   onBeforeUnmount,
   onUpdated,
+  computed,
 } from "vue";
 import api from "@/api";
+import { useStore } from "vuex";
+import { Toast } from "vant";
+import store from "@/store";
 export default {
   name: "DetailItem",
   setup() {
@@ -30,6 +38,16 @@ export default {
       comments: 0,
       popularity: 0,
       newsInfo: null,
+    });
+
+    let isStore = computed(() => {
+      let { isLogin, storeList } = store.state;
+      if (isLogin) {
+        if (!Array.isArray(storeList)) storeList = [];
+        return storeList.some((item) => {
+          return +item.news.id === +route.params.id;
+        });
+      }
     });
 
     onBeforeMount(async () => {
@@ -56,6 +74,27 @@ export default {
       }
     });
 
+    const storeHandle = async () => {
+      if (!store.state.isLogin) {
+        Toast("小主，请先登录哦~");
+        router.push({
+          path: "/login",
+          query: {
+            from: `detail/${route.params.id}`,
+          },
+        });
+        return;
+      }
+      if (isStore.value) return;
+      let { code } = await api.store(route.params.id);
+      if (+code !== 0) {
+        Toast("小主，很遗憾，收藏失败~");
+        return;
+      }
+      Toast("小主很棒，收藏成功了~");
+      store.dispatch("changeStoreListAsync");
+    };
+
     onBeforeUnmount(() => {
       let link = document.getElementById("link");
       if (!link) return;
@@ -69,6 +108,8 @@ export default {
     return {
       ...toRefs(state),
       handle,
+      isStore,
+      storeHandle,
     };
   },
 };
